@@ -36,21 +36,20 @@ const questionnaire =
   , `Which meal is your favourite (eg: dinner, brunch, etc.)\n`
   , `What's your favourite thing to eat for that meal?\n`
   , `Which sport is your absolute favourite?\n`
-  , `What is your superpower? In a few words, tell us what you are amazing at!\n`
   ]
 
-const questionAsker = (questions) => {
-  const answers = [];
+const questionAsker = (questions, answers) => {
+  const runningAnswerList = answers || [];
   for (const question of questions) {
     rl.question(question, (answer) => {
-      if (questions === 1) {
-        answers.push(answer)
-        console.log(answers);
-        return rl.close();
+      runningAnswerList.push(answer)
+      if (questions.length === 1) {
+        rl.close();
+        console.log(`Thanks ${runningAnswerList[0]}! I, too, like to hear ${runningAnswerList[2]} while I ${runningAnswerList[1]}. Let's eat some ${runningAnswerList[4]} for ${runningAnswerList[3]} while we watch ${runningAnswerList[5]} highlights.`);
+      } else {
+        questionAsker(questions.slice(1), runningAnswerList);
       }
-      answers.push(answer);
-      questionAsker(questions.slice(1));
-    }); 
+    });
   }
 }
 
